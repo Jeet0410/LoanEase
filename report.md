@@ -24,18 +24,18 @@
 5. [Project Management](#project-management)  
 6. [Conclusion and Future Work](#conclusion-and-future-work)  
 7. [References](#references)  
-8. [Appendix](#appendix)   LoanEase Project Report
+8. [Appendix](#appendix)
 
-1. ## Introduction
+## Introduction
 LoanEase is a user-friendly loan amortization simulator designed to demystify the true cost of borrowing. It lets users input loan parameters, explore what-if scenarios (such as extra payments or rate shocks), and instantly view detailed repayment schedules and visualisations.
 
 Rationale. Consumers often receive only static tables from lenders. These do not reveal how rounding policies, pre-payments, or interest-rate changes alter total interest paid or payoff time. By providing an interactive, open-source tool that follows rigorous software-testing practices, LoanEase empowers users to make informed financial decisions while serving as a demonstrative case study for ENSE 375’s testing techniques.
 
 This report follows the structure specified in the course template. Section 2 defines the design problem; later sections will document alternative solutions, final architecture, testing, teamwork, and project-management artifacts.
 
-2. ## Design Problem
+## Design Problem
 
-    ### Problem Definition
+### Problem Definition
     Millions of consumers struggle to understand the long-term cost of loans and the impact of extra payments or changes in interest rates. Financial institutions usually provide static amortization tables that do not reveal how rounding rules, payment timing, or rate fluctuations affect total interest paid or payoff time.
 
     The goal of LoanEase is to build a modular, open-source loan amortization simulator that:
