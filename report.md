@@ -46,7 +46,7 @@ This report follows the structure specified in the course template. Section 2 de
 
     By delivering accurate, scenario-driven insights through a friendly interface—and by being developed with rigorous software-testing practices—LoanEase empowers borrowers to make evidence-based financial decisions and serves as a practical case study for ENSE 375’s testing techniques.
 
-## Objectives
+<!--## Objectives
 List the goals and objectives of the project.
 
 ## System Design
@@ -75,4 +75,4 @@ Suggest potential improvements or extensions.
 Summarize the project and its impact.
 
 ## References
-List all references and resources used.
+List all references and resources used.-->
