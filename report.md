@@ -27,24 +27,53 @@
 8. [Appendix](#appendix)
 
 ## Introduction
-LoanEase is a user-friendly loan amortization simulator designed to demystify the true cost of borrowing. It lets users input loan parameters, explore what-if scenarios (such as extra payments or rate shocks), and instantly view detailed repayment schedules and visualisations.
+LoanEase is a user-friendly **loan amortization simulator** designed to demystify the true cost of borrowing. It lets users input loan parameters, explore *what‑if* scenarios (such as extra payments or rate shocks), and instantly view detailed repayment schedules and visualisations.
 
-Rationale. Consumers often receive only static tables from lenders. These do not reveal how rounding policies, pre-payments, or interest-rate changes alter total interest paid or payoff time. By providing an interactive, open-source tool that follows rigorous software-testing practices, LoanEase empowers users to make informed financial decisions while serving as a demonstrative case study for ENSE 375’s testing techniques.
+**Rationale.** Consumers often receive only static tables from lenders. These do not reveal how rounding policies, pre‑payments, or interest‑rate changes alter total interest paid or payoff time. By providing an interactive, open‑source tool that follows rigorous software‑testing practices, LoanEase empowers users to make informed financial decisions while serving as a demonstrative case study for ENSE 375’s testing techniques.
 
-This report follows the structure specified in the course template. Section 2 defines the design problem; later sections will document alternative solutions, final architecture, testing, teamwork, and project-management artifacts.
+This report follows the structure specified in the course template. Section 2 defines the design problem; later sections will document alternative solutions, final architecture, testing, teamwork, and project‑management artifacts.
 
 ## Design Problem
 
 ### Problem Definition
-    Millions of consumers struggle to understand the long-term cost of loans and the impact of extra payments or changes in interest rates. Financial institutions usually provide static amortization tables that do not reveal how rounding rules, payment timing, or rate fluctuations affect total interest paid or payoff time.
+Millions of consumers struggle to understand the long‑term cost of loans and the impact of extra payments or changes in interest rates. Financial institutions usually provide static amortization tables that do not reveal how rounding rules, payment timing, or rate fluctuations affect total interest paid or payoff time.
 
-    The goal of LoanEase is to build a modular, open-source loan amortization simulator that:
+The goal of **LoanEase** is to build a modular, open‑source **loan amortization simulator** that:
 
-    - Lets users model standard and customized repayment schedules.
-    - Runs what-if scenarios (e.g., extra payments, rate shocks).
-    - Exports clear tables and charts that highlight the real cost of borrowing.
+* **Lets users model** standard and customized repayment schedules.  
+* **Runs what‑if scenarios** (e.g., extra payments, rate shocks).  
+* **Exports clear tables and charts** that highlight the real cost of borrowing.  
 
-    By delivering accurate, scenario-driven insights through a friendly interface—and by being developed with rigorous software-testing practices—LoanEase empowers borrowers to make evidence-based financial decisions and serves as a practical case study for ENSE 375’s testing techniques.
+By delivering accurate, scenario‑driven insights through a friendly interface—and by being developed with rigorous software‑testing practices—LoanEase empowers borrowers to make evidence‑based financial decisions and serves as a practical case study for ENSE 375’s testing techniques.
+
+### Design Requirements
+
+#### Functions
+1. **LoadLoanParameters** – ingest principal, nominal interest rate, term, payment frequency, and optional extra‑payment plan.  
+2. **GenerateSchedule** – compute per‑period principal, interest, and remaining balance using the chosen amortization method.  
+3. **RunScenario** – adjust one or more parameters (e.g., extra payment, interest‑rate shock) and recompute the schedule.  
+4. **ExportSchedule** – save the schedule as CSV and PDF.  
+5. **VisualizeSchedule** – render line/bar charts of balance over time and interest vs. principal components.  
+6. **ValidateInputs** – enforce numeric bounds and detect invalid configurations before calculation.  
+
+*Extra functions inherited from the **FinancialCalculator** super‑class include* `roundCurrency`, `computePMT`, `interestPortion`, and `principalPortion`.
+
+#### Objectives
+- **Accurate** – results match authoritative financial formulas within ± 0.01 CAD.  
+- **Reliable** – handles edge cases (0 % rate, 0‑month term) without crashing.  
+- **Extensible** – new financial tools can inherit from `FinancialCalculator` and add domain‑specific logic.  
+- **Usable** – clear GUI/CLI with immediate feedback and export options.  
+- **Maintainable** – clean, layered architecture with > 90 % unit‑test coverage and self‑documenting code.  
+
+#### Constraints
+
+| ID | Constraint | Category | Binary Measure |
+|----|------------|----------|----------------|
+| C1 | Use only open‑source libraries (Apache‑2.0, MIT) | Economic | ✅ dependency audit passes |
+| C2 | Conform to Canadian APR rounding rules | Regulatory compliance | ✅ sample cases match CRA guidelines |
+| C3 | Schedule generation completes in < 1 s for a 40‑year term (480 periods) on a mid‑range laptop | Reliability | ✅ benchmark ≤ 1 s |
+| C4 | Exported files contain no personally identifiable information | Ethics/Security | ✅ static scan shows none |
+| C5 | Runs on any JDK 17+ without additional installs | Sustainability/Deployment | ✅ launch script succeeds |
 
 <!--## Objectives
 List the goals and objectives of the project.
