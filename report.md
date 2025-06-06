@@ -75,6 +75,30 @@ By delivering accurate, scenario‑driven insights through a friendly interface�
 | C4 | Exported files contain no personally identifiable information | Ethics/Security | ✅ static scan shows none |
 | C5 | Runs on any JDK 17+ without additional installs | Sustainability/Deployment | ✅ launch script succeeds |
 
+## Solution
+
+The engineering design followed an **iterative, prototype-driven approach**. Each iteration added functionality and testability while revealing shortcomings that informed the next round.
+
+### 3.1 Solution 1 – Minimal CLI Proof‑of‑Concept
+| Aspect | Description |
+|--------|-------------|
+| **Implementation** | Single-module Java console application (`Main`, `AmortizationCalculator`). Accepts loan parameters via command-line flags and prints a plain-text schedule. |
+| **Purpose** | Validate financial formulas (**PMT**, interest/principal split) and rounding logic *quickly* before investing in UI or persistence layers. |
+| **Testing Focus** | JUnit path & data-flow tests on numeric helpers; boundary tests on edge‑case inputs (0 % rate, 1‑month term). |
+| **Strengths** | ✔ Fast to code (≈2 days) <br> ✔ Provided immediate numeric correctness feedback |
+| **Weaknesses** | ✖ Monolithic—business logic tightly coupled to I/O <br> ✖ Hard to unit‑test I/O paths <br> ✖ No scenario management or visualisation |
+| **Reason Not Selected** | Lacks modularity and user‑friendly output; scaling to extra‑payment scenarios would create spaghetti code |
+
+### 3.2 Solution 2 – Layered Desktop (JavaFX) Prototype
+| Aspect | Description |
+|--------|-------------|
+| **Implementation** | Adopted **MVC** pattern: <br>• **Model:** `FinancialCalculator` super‑class + `LoanModel` <br>• **View:** JavaFX dashboards (table + line chart) <br>• **Controller:** `LoanController` manages user actions |
+| **Enhancements Over S1** | • Clear separation of concerns—core math isolated from UI <br>• Scenario manager lets users run multiple what‑ifs side‑by‑side <br>• CSV export via Apache POI |
+| **Testing Focus** | • Unit: same numeric helpers (re‑used from S1) <br>• Integration: Model ↔ Controller ↔ View via TestFX <br>• Validation: boundary & equivalence tests on input form |
+| **Strengths** | ✔ Modular codebase supports mocking layers <br>✔ Visual charts improve user comprehension |
+| **Weaknesses** | ✖ Desktop‑only distribution; requires JavaFX runtime <br>✖ Larger binary; longer CI build <br>✖ UI tests flaky on headless CI agents |
+| **Reason Not Final** | Portability concerns and UI test instability push us toward a thin‑client web architecture (outlined in Section 3.3) |
+
 <!--## Objectives
 List the goals and objectives of the project.
 
