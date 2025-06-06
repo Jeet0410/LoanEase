@@ -79,7 +79,7 @@ By delivering accurate, scenario‑driven insights through a friendly interface�
 
 The engineering design followed an **iterative, prototype-driven approach**. Each iteration added functionality and testability while revealing shortcomings that informed the next round.
 
-### Solution 1 – Minimal CLI Proof‑of‑Concept
+### 3.1 Solution 1 – Minimal CLI Proof‑of‑Concept
 | Aspect | Description |
 |--------|-------------|
 | **Implementation** | Single-module Java console application (`Main`, `AmortizationCalculator`). Accepts loan parameters via command-line flags and prints a plain-text schedule. |
@@ -89,7 +89,7 @@ The engineering design followed an **iterative, prototype-driven approach**. Eac
 | **Weaknesses** | ✖ Monolithic—business logic tightly coupled to I/O <br> ✖ Hard to unit‑test I/O paths <br> ✖ No scenario management or visualisation |
 | **Reason Not Selected** | Lacks modularity and user‑friendly output; scaling to extra‑payment scenarios would create spaghetti code |
 
-### Solution 2 – Lightweight Python Script Prototype
+### 3.2 Solution 2 – Lightweight Python Script Prototype
 | Aspect | Description |
 |--------|-------------|
 | **Implementation** | Single-file **Python 3** script (`loan_ease.py`) that prompts for loan parameters, uses **NumPy/Pandas** to compute a schedule, and writes `schedule.csv`. Flag `--chart` generates a PNG line chart with Matplotlib. |
