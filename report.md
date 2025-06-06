@@ -79,7 +79,7 @@ By delivering accurate, scenario‑driven insights through a friendly interface�
 
 The engineering design followed an **iterative, prototype-driven approach**. Each iteration added functionality and testability while revealing shortcomings that informed the next round.
 
-### 3.1 Solution 1 – Minimal CLI Proof‑of‑Concept
+### Solution 1 – Minimal CLI Proof‑of‑Concept
 | Aspect | Description |
 |--------|-------------|
 | **Implementation** | Single-module Java console application (`Main`, `AmortizationCalculator`). Accepts loan parameters via command-line flags and prints a plain-text schedule. |
@@ -89,15 +89,15 @@ The engineering design followed an **iterative, prototype-driven approach**. Eac
 | **Weaknesses** | ✖ Monolithic—business logic tightly coupled to I/O <br> ✖ Hard to unit‑test I/O paths <br> ✖ No scenario management or visualisation |
 | **Reason Not Selected** | Lacks modularity and user‑friendly output; scaling to extra‑payment scenarios would create spaghetti code |
 
-### 3.2 Solution 2 – Layered Desktop (JavaFX) Prototype
+### Solution 2 – Lightweight Python Script Prototype
 | Aspect | Description |
 |--------|-------------|
-| **Implementation** | Adopted **MVC** pattern: <br>• **Model:** `FinancialCalculator` super‑class + `LoanModel` <br>• **View:** JavaFX dashboards (table + line chart) <br>• **Controller:** `LoanController` manages user actions |
-| **Enhancements Over S1** | • Clear separation of concerns—core math isolated from UI <br>• Scenario manager lets users run multiple what‑ifs side‑by‑side <br>• CSV export via Apache POI |
-| **Testing Focus** | • Unit: same numeric helpers (re‑used from S1) <br>• Integration: Model ↔ Controller ↔ View via TestFX <br>• Validation: boundary & equivalence tests on input form |
-| **Strengths** | ✔ Modular codebase supports mocking layers <br>✔ Visual charts improve user comprehension |
-| **Weaknesses** | ✖ Desktop‑only distribution; requires JavaFX runtime <br>✖ Larger binary; longer CI build <br>✖ UI tests flaky on headless CI agents |
-| **Reason Not Final** | Portability concerns and UI test instability push us toward a thin‑client web architecture (outlined in Section 3.3) |
+| **Implementation** | Single-file **Python 3** script (`loan_ease.py`) that prompts for loan parameters, uses **NumPy/Pandas** to compute a schedule, and writes `schedule.csv`. Flag `--chart` generates a PNG line chart with Matplotlib. |
+| **Independence from S1** | Fresh codebase—does **not** reuse the Java prototype; provides a clean, language-agnostic formula check. |
+| **Testing Focus** | • `pytest` unit tests for helpers (`compute_pmt`, `split_interest_principal`) <br>• Integration test: script produces correct CSV <br>• Boundary tests for 0 % rate, negative principal rejection, 1-month term |
+| **Strengths** | ✔ Highly readable (~ 150 lines) <br>✔ Runs anywhere with Python 3 <br>✔ CSV output is Excel-friendly <br>✔ Quick Matplotlib chart for visual feedback |
+| **Weaknesses** | ✖ Command-line only; each scenario requires a rerun <br>✖ Users must install Python deps |
+| **Reason Not Final** | Lacks interactive UI and multi-scenario comparison—motivates a web-based thin-client final solution (Section 3.3). |
 
 <!--## Objectives
 List the goals and objectives of the project.
