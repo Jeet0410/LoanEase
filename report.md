@@ -9,13 +9,13 @@
          2.2.2 [Objectives](#objectives)  
          2.2.3 [Constraints](#constraints)  
 3. [Solution](#solution)  
-    3.1 [Solution 1](#solution-1)  
-    3.2 [Solution 2](#solution-2)  
-    3.3 [Final Solution](#final-solution)  
-         3.3.1 [Components](#components)  
-         3.3.2 [Features](#features)  
-         3.3.3 [Environmental, Societal, Safety, and Economic Considerations](#environmental-societal-safety-and-economic-considerations)  
-         3.3.4 [Limitations](#limitations)  
+   3.1 [Solution 1](#31-solution-1)  
+   3.2 [Solution 2](#32-solution-2)  
+   3.3 [Final Solution](#33-final-solution)  
+        3.3.1 [Components](#components)  
+        3.3.2 [Features](#features)  
+        3.3.3 [Environmental, Societal, Safety, and Economic Considerations](#environmental-societal-safety-and-economic-considerations)  
+        3.3.4 [Limitations](#limitations) 
 4. [Team Work](#team-work)  
     4.1 [Meeting 1](#meeting-1)  
     4.2 [Meeting 2](#meeting-2)  
@@ -98,6 +98,46 @@ The engineering design followed an **iterative, prototype-driven approach**. Eac
 | **Strengths** | ✔ Highly readable (~ 150 lines) <br>✔ Runs anywhere with Python 3 <br>✔ CSV output is Excel-friendly <br>✔ Quick Matplotlib chart for visual feedback |
 | **Weaknesses** | ✖ Command-line only; each scenario requires a rerun <br>✖ Users must install Python deps |
 | **Reason Not Final** | Lacks interactive UI and multi-scenario comparison—motivates a web-based thin-client final solution (Section 3.3). |
+
+### 3.3 Final Solution – Web‑Based Thin‑Client Architecture
+
+The final design delivers LoanEase as a **responsive single‑page web app** backed by a lightweight REST API. Users access the tool through any modern browser without installing Java, Python, or desktop runtimes.
+
+#### 3.3.1 Components
+| # | Component | Technology | Purpose | Key Tests |
+|---|-----------|------------|---------|-----------|
+| 1 | **LoanService API** | Spring Boot (Java 17) | Exposes `/api/schedule` and `/api/scenario` endpoints that accept JSON loan parameters and return amortization schedules. | • JUnit service‑level unit tests <br>• Integration tests with MockMvc |
+| 2 | **Formula Engine** | Shared Java module (`financial‑calculator`) | Houses `FinancialCalculator`, `LoanModel`, rounding utilities. Re‑used by both API and CLI fallback. | • Path, data‑flow, and boundary tests |
+| 3 | **Web Client** | React 18 + Vite | Interactive form, scenario manager, and chart visualisations (Recharts). | • React Testing Library for components <br>• Cypress end‑to‑end tests |
+| 4 | **Persistence Layer** | SQLite (Spring Data) | Stores saved loans & scenarios; IndexedDB fallback for offline. | • Repository integration tests |
+| 5 | **Export Module** | Apache PDFBox & CSV util | Converts schedule JSON into PDF/CSV downloads. | • Decision‑table tests on export formats |
+
+#### 3.3.2 Features
+* **Interactive Loan Form** – real‑time validation and instant monthly payment preview  
+* **Scenario Dashboard** – compare multiple what‑if scenarios side‑by‑side  
+* **Dynamic Charts** – line graph (balance) and stacked bar (interest vs. principal)  
+* **Export** – one‑click CSV and PDF schedule downloads  
+* **Session Save/Load** – local persistence; optional cloud sync  
+* **Accessibility** – WCAG 2.1 colour contrast & keyboard support  
+
+#### 3.3.3 Environmental, Societal, Safety, and Economic Considerations
+| Factor | Mitigation / Positive Impact |
+|--------|-----------------------------|
+| **Economic** | Open‑source licence avoids vendor lock‑in; self‑hosting possible |
+| **Regulatory / Security** | Data stays client‑side unless user opts for sync; HTTPS; OWASP checks |
+| **Reliability** | >90 % test coverage; CI pipeline; graceful error handling |
+| **Sustainability** | Web bundle <150 kB; stateless JSON API → low CPU |
+| **Societal Impact** | Improves financial literacy; inclusive design for assistive tech |
+| **Ethics** | No ads or data resale; clear educational‑use disclaimer |
+
+#### 3.3.4 Limitations
+1. **Approximation vs. Lender Rules** – Some lenders use proprietary day‑count conventions leading to minor discrepancies.  
+2. **Offline Complexity** – IndexedDB storage is browser‑specific; clearing data deletes scenarios unless synced.  
+3. **High‑Volume Stress** – SQLite suits small teams; enterprise scale requires PostgreSQL migration.  
+4. **Mobile Chart Density** – Very small screens (< 4.7 in) make dual‑chart view cramped.  
+5. **Internationalisation** – English/French supported; other locales need additional formatting patches.
+
+---
 
 <!--## Objectives
 List the goals and objectives of the project.
