@@ -39,12 +39,15 @@ public class AmortizationService {
         for (int period = 1; period <= periods && remainingBalance.compareTo(BigDecimal.ZERO) > 0; period++) {
             BigDecimal interest = calculator.interestPortion(remainingBalance, monthlyRate);
             BigDecimal principalPortion = calculator.principalPortion(payment, interest);
-            if (principalPortion.compareTo(remainingBalance) > 0) {
+            if (period == periods || principalPortion.compareTo(remainingBalance) > 0) {
                 principalPortion = remainingBalance;
                 payment = principalPortion.add(interest);
             }
             remainingBalance = remainingBalance.subtract(principalPortion);
-            Payment p = new Payment(loanId, period, principalPortion, interest, remainingBalance);
+            Payment p = new Payment(loanId, period, 
+                                   principalPortion.setScale(2, RoundingMode.HALF_UP),
+                                   interest.setScale(2, RoundingMode.HALF_UP),
+                                   remainingBalance.setScale(2, RoundingMode.HALF_UP));
             schedule.add(p);
         }
         logger.info("Schedule generated with {} payments", schedule.size());
@@ -52,19 +55,21 @@ public class AmortizationService {
         return schedule;
     }
 
-    public List<Payment> runScenario(long loanId, BigDecimal newExtraPayment, BigDecimal newRate) {
+    public LoanSchedulePair runScenario(long loanId, BigDecimal newExtraPayment, BigDecimal newRate) {
         logger.info("Running scenario for loanId={}, extraPayment={}, newRate={}", 
                     loanId, newExtraPayment, newRate);
         Loan loan = getLoanById(loanId);
         if (loan == null) {
             throw new IllegalArgumentException("Loan not found");
         }
-        // Create a new loan with updated parameters
-        Loan scenarioLoan = new Loan(loan.getPrincipal(), newRate != null ? newRate : loan.getAnnualInterestRate(),
-                                    loan.getTermInMonths(), loan.getPaymentFrequency(), 
+        Loan scenarioLoan = new Loan(loan.getPrincipal(), 
+                                    newRate != null ? newRate : loan.getAnnualInterestRate(),
+                                    loan.getTermInMonths(), 
+                                    loan.getPaymentFrequency(), 
                                     newExtraPayment != null ? newExtraPayment : loan.getExtraPayment());
         long scenarioLoanId = dbService.saveLoan(scenarioLoan);
-        return generateSchedule(scenarioLoanId);
+        List<Payment> scenarioSchedule = generateSchedule(scenarioLoanId);
+        return new LoanSchedulePair(scenarioLoan, scenarioSchedule);
     }
 
     private Loan getLoanById(long loanId) {
@@ -87,5 +92,24 @@ public class AmortizationService {
             logger.error("Failed to retrieve loan: {}", e.getMessage());
         }
         return null;
+    }
+
+    // Helper class to return both Loan and Schedule
+    public static class LoanSchedulePair {
+        private final Loan loan;
+        private final List<Payment> schedule;
+
+        public LoanSchedulePair(Loan loan, List<Payment> schedule) {
+            this.loan = loan;
+            this.schedule = schedule;
+        }
+
+        public Loan getLoan() {
+            return loan;
+        }
+
+        public List<Payment> getSchedule() {
+            return schedule;
+        }
     }
 }
