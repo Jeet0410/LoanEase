@@ -27,6 +27,6 @@ public class LoanEaseCLITest {
         String input = "10000\n0.05\n12\nMonthly\n0\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         cli.start();
-        assertTrue(outContent.toString().contains("Period | Principal | Interest | Balance"));
+        assertTrue(outContent.toString().contains("Period | Principal | Interest | Total Payment | Balance"));
     }
 }

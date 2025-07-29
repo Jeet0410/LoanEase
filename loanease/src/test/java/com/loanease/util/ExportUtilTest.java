@@ -34,10 +34,11 @@ public class ExportUtilTest {
         File file = new File(filePath);
         assertTrue(file.exists());
         List<String> lines = Files.readAllLines(file.toPath());
-        assertEquals(3, lines.size()); // Header + 2 payments
-        assertEquals("Period,Principal,Interest,Balance", lines.get(0));
-        assertEquals("1,800.00,41.67,9200.00", lines.get(1));
-        assertEquals("2,803.33,38.34,8396.67", lines.get(2));
+        assertEquals(4, lines.size()); // Header + 2 payments + totals
+        assertEquals("Period,Principal,Interest,Total Payment,Balance", lines.get(0));
+        assertEquals("1,800.00,41.67,841.67,9200.00", lines.get(1));
+        assertEquals("2,803.33,38.34,841.67,8396.67", lines.get(2));
+        assertEquals("Totals,1603.33,80.01,1683.34,", lines.get(3));
         file.delete();
     }
 

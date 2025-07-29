@@ -29,14 +29,29 @@ public class ExportUtil {
             throw new IllegalArgumentException("Schedule is null or empty");
         }
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            writer.write("Period,Principal,Interest,Balance\n");
+            writer.write("Period,Principal,Interest,Total Payment,Balance\n");
+            BigDecimal totalPrincipal = BigDecimal.ZERO;
+            BigDecimal totalInterest = BigDecimal.ZERO;
+            BigDecimal totalPayment = BigDecimal.ZERO;
             for (Payment payment : schedule) {
-                writer.write(String.format("%d,%.2f,%.2f,%.2f\n",
+                BigDecimal principal = payment.getPrincipalPortion().setScale(2, RoundingMode.HALF_UP);
+                BigDecimal interest = payment.getInterestPortion().setScale(2, RoundingMode.HALF_UP);
+                BigDecimal paymentAmount = principal.add(interest).setScale(2, RoundingMode.HALF_UP);
+                totalPrincipal = totalPrincipal.add(principal);
+                totalInterest = totalInterest.add(interest);
+                totalPayment = totalPayment.add(paymentAmount);
+                writer.write(String.format("%d,%.2f,%.2f,%.2f,%.2f\n",
                         payment.getPeriod(),
-                        payment.getPrincipalPortion().setScale(2, RoundingMode.HALF_UP),
-                        payment.getInterestPortion().setScale(2, RoundingMode.HALF_UP),
+                        principal,
+                        interest,
+                        paymentAmount,
                         payment.getRemainingBalance().setScale(2, RoundingMode.HALF_UP)));
             }
+            // Totals row
+            writer.write(String.format("Totals,%.2f,%.2f,%.2f,\n",
+                    totalPrincipal.setScale(2, RoundingMode.HALF_UP),
+                    totalInterest.setScale(2, RoundingMode.HALF_UP),
+                    totalPayment.setScale(2, RoundingMode.HALF_UP)));
             logger.info("Exported schedule to CSV: {}", filePath);
         } catch (IOException e) {
             logger.error("Failed to export CSV to {}: {}", filePath, e.getMessage());
@@ -80,27 +95,46 @@ public class ExportUtil {
                     .setMarginBottom(20));
 
             // Schedule Table
-            Table table = new Table(UnitValue.createPercentArray(new float[]{25, 25, 25, 25}))
+            Table table = new Table(UnitValue.createPercentArray(new float[]{20, 20, 20, 20, 20}))
                     .setWidth(UnitValue.createPercentValue(100));
             // Headers
             table.addHeaderCell(new Cell().add(new Paragraph("Period").setBold()).setTextAlignment(TextAlignment.CENTER));
             table.addHeaderCell(new Cell().add(new Paragraph("Principal").setBold()).setTextAlignment(TextAlignment.CENTER));
             table.addHeaderCell(new Cell().add(new Paragraph("Interest").setBold()).setTextAlignment(TextAlignment.CENTER));
+            table.addHeaderCell(new Cell().add(new Paragraph("Total Payment").setBold()).setTextAlignment(TextAlignment.CENTER));
             table.addHeaderCell(new Cell().add(new Paragraph("Balance").setBold()).setTextAlignment(TextAlignment.CENTER));
             // Data
+            BigDecimal totalPrincipal = BigDecimal.ZERO;
+            BigDecimal totalInterest = BigDecimal.ZERO;
+            BigDecimal totalPayment = BigDecimal.ZERO;
             for (Payment payment : schedule) {
+                BigDecimal principal = payment.getPrincipalPortion().setScale(2, RoundingMode.HALF_UP);
+                BigDecimal interest = payment.getInterestPortion().setScale(2, RoundingMode.HALF_UP);
+                BigDecimal paymentAmount = principal.add(interest).setScale(2, RoundingMode.HALF_UP);
+                totalPrincipal = totalPrincipal.add(principal);
+                totalInterest = totalInterest.add(interest);
+                totalPayment = totalPayment.add(paymentAmount);
                 table.addCell(new Cell().add(new Paragraph(String.valueOf(payment.getPeriod())))
                         .setTextAlignment(TextAlignment.CENTER));
-                table.addCell(new Cell().add(new Paragraph(String.format("$%,.2f", 
-                        payment.getPrincipalPortion().setScale(2, RoundingMode.HALF_UP))))
+                table.addCell(new Cell().add(new Paragraph(String.format("$%,.2f", principal)))
                         .setTextAlignment(TextAlignment.CENTER));
-                table.addCell(new Cell().add(new Paragraph(String.format("$%,.2f", 
-                        payment.getInterestPortion().setScale(2, RoundingMode.HALF_UP))))
+                table.addCell(new Cell().add(new Paragraph(String.format("$%,.2f", interest)))
+                        .setTextAlignment(TextAlignment.CENTER));
+                table.addCell(new Cell().add(new Paragraph(String.format("$%,.2f", paymentAmount)))
                         .setTextAlignment(TextAlignment.CENTER));
                 table.addCell(new Cell().add(new Paragraph(String.format("$%,.2f", 
                         payment.getRemainingBalance().setScale(2, RoundingMode.HALF_UP))))
                         .setTextAlignment(TextAlignment.CENTER));
             }
+            // Totals row
+            table.addCell(new Cell().add(new Paragraph("Totals").setBold()).setTextAlignment(TextAlignment.CENTER));
+            table.addCell(new Cell().add(new Paragraph(String.format("$%,.2f", totalPrincipal)).setBold())
+                    .setTextAlignment(TextAlignment.CENTER));
+            table.addCell(new Cell().add(new Paragraph(String.format("$%,.2f", totalInterest)).setBold())
+                    .setTextAlignment(TextAlignment.CENTER));
+            table.addCell(new Cell().add(new Paragraph(String.format("$%,.2f", totalPayment)).setBold())
+                    .setTextAlignment(TextAlignment.CENTER));
+            table.addCell(new Cell().add(new Paragraph("")).setTextAlignment(TextAlignment.CENTER)); // No total for Balance
             document.add(table);
             logger.info("Exported schedule to PDF: {}", filePath);
         } catch (Exception e) {

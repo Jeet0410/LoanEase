@@ -1,6 +1,5 @@
 package com.loanease.ui;
 
-import com.itextpdf.io.exceptions.IOException;
 import com.loanease.model.Loan;
 import com.loanease.model.Payment;
 import com.loanease.service.AmortizationService;
@@ -8,6 +7,8 @@ import com.loanease.util.ExportUtil;
 import com.loanease.util.LoanInputValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
@@ -37,10 +38,11 @@ public class LoanEaseCLI {
             validator.validate(loan);
             long loanId = service.saveLoan(loan);
             List<Payment> schedule = service.generateSchedule(loanId);
-            System.out.println("Period | Principal | Interest | Balance");
+            System.out.println("Period | Principal | Interest | Total Payment | Balance");
             for (Payment p : schedule) {
-                System.out.printf("%d | %.2f | %.2f | %.2f%n", 
-                                  p.getPeriod(), p.getPrincipalPortion(), p.getInterestPortion(), p.getRemainingBalance());
+                BigDecimal totalPayment = p.getPrincipalPortion().add(p.getInterestPortion()).setScale(2, BigDecimal.ROUND_HALF_UP);
+                System.out.printf("%d | %.2f | %.2f | %.2f | %.2f%n", 
+                                  p.getPeriod(), p.getPrincipalPortion(), p.getInterestPortion(), totalPayment, p.getRemainingBalance());
             }
 
             // Export option for main schedule
@@ -78,10 +80,11 @@ public class LoanEaseCLI {
                 List<Payment> scenarioSchedule = scenarioPair.getSchedule();
                 Loan scenarioLoan = scenarioPair.getLoan();
                 System.out.println("Scenario Schedule:");
-                System.out.println("Period | Principal | Interest | Balance");
+                System.out.println("Period | Principal | Interest | Total Payment | Balance");
                 for (Payment p : scenarioSchedule) {
-                    System.out.printf("%d | %.2f | %.2f | %.2f%n", 
-                                      p.getPeriod(), p.getPrincipalPortion(), p.getInterestPortion(), p.getRemainingBalance());
+                    BigDecimal totalPayment = p.getPrincipalPortion().add(p.getInterestPortion()).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    System.out.printf("%d | %.2f | %.2f | %.2f | %.2f%n", 
+                                      p.getPeriod(), p.getPrincipalPortion(), p.getInterestPortion(), totalPayment, p.getRemainingBalance());
                 }
                 // Export option for scenario schedule
                 System.out.print("Export scenario schedule to CSV? (y/n): ");
