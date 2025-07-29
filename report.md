@@ -77,67 +77,66 @@ By delivering accurate, scenario-driven insights through a friendly interface—
 
 ## Solution
 
-The engineering design followed an **iterative, prototype-driven approach**. Each iteration added functionality and testability while revealing shortcomings that informed the next round.
+The engineering design followed an **iterative, prototype-driven approach**. Each iteration added functionality and testability while revealing shortcomings that informed the next round. Testing was a core consideration, aligning with the Software Testing and Validation course requirements, using test-driven development (TDD) and JUnit, with techniques like path testing, data flow, integration testing, boundary value testing, equivalence class testing, decision tables testing, state transition testing, and use case testing.
 
 ### 3.1 Solution 1 – Web-Based Proof-of-Concept
 | Aspect | Description |
 |--------|-------------|
 | **Implementation** | A basic single-page web application using HTML, CSS, and vanilla JavaScript (`index.html`, `app.js`). Users input loan parameters via a form, and the app calculates and displays a simple amortization table using client-side logic. |
 | **Purpose** | Validate the feasibility of a web-based interface and test core financial calculations (e.g., PMT, interest/principal split) in a browser environment before adding complexity. |
-| **Testing Focus** | Manual testing of form inputs and table outputs; basic unit tests with Jasmine for numeric helpers; boundary tests for edge cases (0% rate, 1-month term). |
-| **Strengths** | ✔ Quick to develop (≈3 days) <br> ✔ Accessible via any browser <br> ✔ Provided initial user feedback on web usability |
-| **Weaknesses** | ✖ Limited interactivity—no scenario management or visualizations <br> ✖ No server-side processing or persistence <br> ✖ Basic styling and no export options |
-| **Reason Not Selected** | Lacks advanced features like scenario comparison and exports; scaling to meet all requirements would require significant rework. |
+| **Testing Focus** | Initial TDD with Jasmine for numeric helpers; manual testing of form inputs and table outputs; boundary value tests for edge cases (0% rate, 1-month term). |
+| **Strengths** | ✔ Quick to develop (≈3 days) <br> ✔ Accessible via any browser for broad testing <br> ✔ Simple TDD setup with Jasmine allowed early validation of financial formulas |
+| **Weaknesses** | ✖ Limited test coverage—no support for path or data flow testing due to monolithic design <br> ✖ Lack of integration testing between UI and logic <br> ✖ No automated testing for state transitions or use cases, relying on manual checks |
+| **Reason Not Selected** | Insufficient testability and scalability; the monolithic structure hindered comprehensive testing required by the course, necessitating a more modular design. |
 
 ### 3.2 Solution 2 – Mobile App Prototype
 | Aspect | Description |
 |--------|-------------|
 | **Implementation** | A lightweight mobile app prototype using Flutter (`main.dart`) targeting Android and iOS. Users input loan details, and the app generates a basic amortization schedule with a simple line chart using the `fl_chart` package. Data is stored locally using SQLite. |
 | **Independence from S1** | Independent codebase, exploring a mobile-first approach to broaden accessibility beyond web users. |
-| **Testing Focus** | • Unit tests with `test` package for financial calculations <br> • Widget tests for UI components <br> • Integration tests for local storage and chart rendering |
-| **Strengths** | ✔ Native mobile experience with offline support <br> ✔ Intuitive touch interface <br> ✔ Quick chart visualization for on-the-go use |
-| **Weaknesses** | ✖ Requires app store deployment and user installation <br> ✖ Limited cross-platform testing resources <br> ✖ No multi-scenario comparison or export features |
-| **Reason Not Final** | Deployment complexity and lack of web accessibility motivated a return to a web-based solution with broader reach (Section 3.3). |
+| **Testing Focus** | TDD with the `test` package for financial calculations; widget tests for UI components; integration tests for local storage and chart rendering; basic boundary value and equivalence class testing. |
+| **Strengths** | ✔ Native mobile experience with offline support <br> ✔ TDD and widget testing enabled early detection of UI and logic issues <br> ✔ Integration testing with SQLite provided confidence in data persistence |
+| **Weaknesses** | ✖ Limited cross-platform testing resources constrained state transition and use case testing <br> ✖ Lack of decision tables testing due to absent complex logic branches <br> ✖ App store deployment added testing overhead, reducing focus on optimal test suites |
+| **Reason Not Final** | Testing complexity and lack of web accessibility, combined with incomplete coverage of required testing techniques, motivated a return to a CLI-based solution with robust testing (Section 3.3). |
 
-### 3.3 Final Solution – Web-Based Thin-Client Architecture with CLI Fallback
+### 3.3 Final Solution – Modular CLI-Based Architecture
 
-The final design delivers LoanEase as a **responsive single-page web app** backed by a lightweight REST API, with a CLI fallback for advanced users. Users access the tool through any modern browser or run it locally via the command line without additional installs.
+The final design delivers LoanEase as a **modular Java-based Command-Line Interface (CLI) application**, developed using test-driven development (TDD) and JUnit to create optimal test suites. This solution prioritizes maintainability and testability, allowing users to run it locally on any JDK 17+ environment without additional installs, and includes export capabilities for CSV and PDF.
 
 #### 3.3.1 Components
 | # | Component | Technology | Purpose | Key Tests |
 |---|-----------|------------|---------|-----------|
-| 1 | **LoanService API** | Spring Boot (Java 17) | Exposes `/api/schedule` and `/api/scenario` endpoints that accept JSON loan parameters and return amortization schedules. | • JUnit service-level unit tests <br> • Integration tests with MockMvc |
-| 2 | **Formula Engine** | Shared Java module (`financial-calculator`) | Houses `FinancialCalculator`, `LoanModel`, rounding utilities. Re-used by both API and CLI fallback. | • Path, data-flow, and boundary tests |
-| 3 | **Web Client** | React 18 + Vite | Interactive form, scenario manager, and chart visualizations (Recharts). | • React Testing Library for components <br> • Cypress end-to-end tests |
-| 4 | **CLI Fallback** | Java with SLF4J/Apache Commons | Command-line interface for users preferring terminal interaction, reusing the Formula Engine. | • JUnit tests for I/O and scenario logic <br> • Coverage >80% with JaCoCo |
-| 5 | **Persistence Layer** | SQLite (Spring Data) | Stores saved loans & scenarios; IndexedDB fallback for offline web use. | • Repository integration tests |
-| 6 | **Export Module** | Apache PDFBox & CSV util | Converts schedule JSON into PDF/CSV downloads for both web and CLI. | • Decision-table tests on export formats |
+| 1 | **LoanCLI** | Java with SLF4J | Main entry point handling user input via Scanner and orchestrating loan calculations. | • JUnit tests with path and data flow testing <br> • Use case testing for input flows |
+| 2 | **Formula Engine** | Shared Java module (`financial-calculator`) | Houses `FinancialCalculator`, `LoanModel`, and utilities like `roundCurrency`, `computePMT`. | • Path, data-flow, and boundary value tests <br> • Equivalence class testing for input ranges |
+| 3 | **AmortizationService** | Java | Generates amortization schedules based on loan parameters. | • Integration tests with MockMvc <br> • State transition testing for schedule updates |
+| 4 | **ExportUtil** | Java with Apache PDFBox & CSV | Handles export of schedules to CSV and PDF files. | • Decision-table tests on export formats <br> • Boundary value testing for file operations |
+| 5 | **LoanInputValidator** | Java | Validates loan parameters (e.g., principal, rate, term). | • Boundary value and equivalence class testing <br> • Integration tests with LoanCLI |
+| 6 | **Persistence Layer** | SQLite (Spring Data) | Stores and retrieves loan data locally. | • Repository integration tests with boundary value testing |
 
 #### 3.3.2 Features
-* **Interactive Loan Form** – real-time validation and instant monthly payment preview  
-* **Scenario Dashboard** – compare multiple what-if scenarios side-by-side  
-* **Dynamic Charts** – line graph (balance) and stacked bar (interest vs. principal)  
-* **Export** – one-click CSV and PDF schedule downloads (web) or file output (CLI)  
-* **Session Save/Load** – local persistence via IndexedDB (web) or SQLite (CLI); optional cloud sync  
-* **Accessibility** – WCAG 2.1 colour contrast & keyboard support (web); CLI usability with clear prompts  
-* **CLI Mode** – Terminal-based operation with identical core functionality for power users  
+* **Interactive CLI Form** – real-time input validation and prompt-based navigation  
+* **Scenario Management** – allows adjustment of parameters (e.g., extra payments, rate shocks) and recomputation  
+* **Schedule Output** – displays detailed repayment schedules in the terminal  
+* **Export** – saves schedules as CSV and PDF files  
+* **Session Persistence** – saves and loads loan data using SQLite  
+* **Error Handling** – provides clear feedback for invalid inputs or failures  
 
 #### 3.3.3 Environmental, Societal, Safety, and Economic Considerations
 | Factor | Mitigation / Positive Impact |
 |--------|-----------------------------|
-| **Economic** | Open-source license avoids vendor lock-in; self-hosting possible; CLI reduces hardware dependency |
-| **Regulatory / Security** | Data stays client-side unless user opts for sync; HTTPS; OWASP checks; CLI logs no PII |
-| **Reliability** | >90% test coverage (web) and >80% (CLI); CI pipeline; graceful error handling |
-| **Sustainability** | Web bundle <150 kB; stateless JSON API → low CPU; CLI lightweight with no GUI overhead |
-| **Societal Impact** | Improves financial literacy; inclusive design for assistive tech (web) and terminal users (CLI) |
-| **Ethics** | No ads or data resale; clear educational-use disclaimer |
+| **Economic** | Open-source license avoids vendor lock-in; CLI reduces hardware dependency |
+| **Regulatory / Security** | No network transmission; local SQLite stores no PII; file exports comply with C4 |
+| **Reliability** | >80% test coverage with JUnit; CI pipeline ensures stability |
+| **Sustainability** | Lightweight Java app with minimal resource use; no GUI overhead |
+| **Societal Impact** | Improves financial literacy for tech-savvy users; accessible on any JDK 17+ system |
+| **Ethics** | No data resale; educational-use disclaimer included |
 
 #### 3.3.4 Limitations
-1. **Approximation vs. Lender Rules** – Some lenders use proprietary day-count conventions leading to minor discrepancies.  
-2. **Offline Complexity** – IndexedDB storage is browser-specific; CLI requires local setup for persistence.  
-3. **High-Volume Stress** – SQLite suits small teams; enterprise scale requires PostgreSQL migration.  
-4. **Mobile Chart Density** – Very small screens (< 4.7 in) make dual-chart view cramped on web.  
-5. **Internationalisation** – English/French supported; other locales need additional formatting patches.
+1. **No Visualizations** – Lacks graphical charts, limiting user experience compared to web/mobile.  
+2. **Manual Input** – Requires keyboard interaction, less intuitive than GUI.  
+3. **Persistence Dependency** – SQLite setup needed for full functionality.  
+4. **Scalability** – SQLite suits small-scale use; enterprise needs may require migration.  
+5. **Internationalisation** – English-only prompts; other locales need localization.
 
 ---
 
