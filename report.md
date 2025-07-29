@@ -137,6 +137,24 @@ The final design delivers LoanEase as a **responsive single‑page web app** bac
 4. **Mobile Chart Density** – Very small screens (< 4.7 in) make dual‑chart view cramped.  
 5. **Internationalisation** – English/French supported; other locales need additional formatting patches.
 
+Here is your **Team Work section (Meetings 1–8)** updated to match your detailed activity descriptions, formatted in **Markdown** for your `README.md`:
+
+---
+
+## Team Work
+
+### Meeting 1
+
+**Time:** May 10, 2025, 4:00 pm – 5:00 pm
+**Agenda:** Initial Brainstorming Session
+**Summary:** The team discussed the overall problem of loan amortization. Brainstormed project goals, identified major components, and reviewed user needs.
+
+| Team Member | Previous Task | Completion State | Next Task                      |
+| ----------- | ------------- | ---------------- | ------------------------------ |
+| Jeet Patel  | N/A           | N/A              | Research amortization formulas |
+| Jay Patel   | N/A           | N/A              | Begin CLI prototype (Java)     |
+| Rayansh Chowatia  | N/A     | N/A              | Draft UI wireframes            |
+
 ---
 
 <!--## Objectives
