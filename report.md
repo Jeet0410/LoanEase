@@ -156,8 +156,6 @@ Results were logged in `target/surefire-reports`, showing >80% coverage (target 
 4. **Scalability**: SQLite suits small-scale use; enterprise needs may require migration.
 5. **Internationalisation**: English-only prompts; other locales need localization.
 
-Here is your **Team Work section (Meetings 1–8)** updated to match your detailed activity descriptions, formatted in **Markdown** for your `README.md`:
-
 ---
 
 ## Team Work
@@ -173,6 +171,104 @@ Here is your **Team Work section (Meetings 1–8)** updated to match your detail
 | Jeet Patel  | N/A           | N/A              | Prepare design idea            |
 | Jay Patel   | N/A           | N/A              | Research tech stack options    |
 | Rayansh Chowatia  | N/A     | N/A              | Research UI/UX approaches      |
+
+---
+
+#### Meeting 2
+ 
+**Time:** May 17, 2025, 5:00 pm – 6:00 pm
+**Agenda:** Design Discussion
+**Summary:** Shared and discussed individual design ideas. Compared web, mobile, and CLI approaches. Outlined initial solution options and testing techniques.
+
+| Team Member      | Previous Task       | Completion State | Next Task                        |
+| ---------------- | ------------------- | ---------------- | -------------------------------- |
+| Jeet Patel       | Design idea         | 80%            | Draft Web-based solution outline |
+| Jay Patel        | Tech stack research | 80%            | Set up Java CLI skeleton project |
+| Rayansh Chowatia | UI/UX research      | 75%            | Create mock UI for CLI and web   |
+
+---
+
+#### Meeting 3
+
+**Time:** May 24, 2025, 6:00 pm – 7:00 pm
+**Agenda:** Solution Planning
+**Summary:** Team finalized the two main solution prototypes (Web and Mobile). Created rough outlines and started dividing implementation tasks.
+
+| Team Member      | Previous Task        | Completion State | Next Task                            |
+| ---------------- | -------------------- | ---------------- | ------------------------------------ |
+| Jeet Patel       | Web solution outline | 90%                | Start basic HTML/JS implementation   |
+| Jay Patel        | Java CLI skeleton    | 85%           | Start CLI input + formula logic      |
+| Rayansh Chowatia | UI mockups           | 80%            | Assist with Flutter setup for mobile |
+
+---
+
+#### Meeting 4
+
+**Time:** June 1, 2025, 5:30 pm – 6:30 pm
+**Agenda:** Prototype Feedback
+**Summary:** Shared progress on both prototypes. Identified key testing limitations and gaps in both web and mobile solutions.
+
+| Team Member      | Previous Task                  | Completion State | Next Task                       |
+| ---------------- | ------------------------------ | ---------------- | ------------------------------- |
+| Jeet Patel       | HTML/JS implementation         | 75%           | Finalize Web prototype for demo |
+| Jay Patel        | CLI logic and input validation | 80%            | Add unit tests with JUnit       |
+| Rayansh Chowatia | Flutter setup and testing      | 70%            | Test storage/chart integration  |
+
+---
+
+#### Meeting 5
+
+**Time:** June 10, 2025, 5:00 pm – 6:00 pm
+**Agenda:** Testing Techniques Review
+**Summary:** Reviewed all required software testing techniques. Compared how well each prototype supports testing. Noted that CLI option had best testability.
+
+| Team Member      | Previous Task               | Completion State | Next Task                            |
+| ---------------- | --------------------------- | ---------------- | ------------------------------------ |
+| Jeet Patel       | Web prototype demo          | 90%            | Prepare comparison table             |
+| Jay Patel        | JUnit test setup            | 75%           | Add path and data flow tests         |
+| Rayansh Chowatia | Mobile testing with Flutter | 80%            | Document limitations of mobile tests |
+
+---
+
+#### Meeting 6
+
+**Time:** June 18, 2025, 4:00 pm – 5:00 pm
+**Agenda:** Final Solution Selection
+**Summary:** Based on testability and maintainability, selected CLI-based solution as final. Discussed next tasks: modular design, full integration, and export feature.
+
+| Team Member      | Previous Task         | Completion State | Next Task                     |
+| ---------------- | --------------------- | ---------------- | ----------------------------- |
+| Jeet Patel       | Comparison table      | 95%             | Help integrate ExportUtil     |
+| Jay Patel        | Path/data flow tests  | 85%             | Design modular structure      |
+| Rayansh Chowatia | Mobile testing report | 75%           | Assist with integration tests |
+
+---
+
+#### Meeting 7
+
+**Time:** July 5, 2025, 5:30 pm – 6:30 pm
+**Agenda:** Testing and Validation
+**Summary:** Reviewed JUnit test coverage (path, BVA, ECT, decision tables). Confirmed results using Maven and JaCoCo. Identified areas needing more coverage.
+
+| Team Member      | Previous Task               | Completion State | Next Task                           |
+| ---------------- | --------------------------- | ---------------- | ----------------------------------- |
+| Jeet Patel       | ExportUtil integration      | 85%            | Finalize test cases for ExportUtil  |
+| Jay Patel        | Modular structure           | 90%             | Complete full system use case tests |
+| Rayansh Chowatia | Integration test assistance | 80%             | Run state transition tests          |
+
+---
+
+#### Meeting 8
+
+**Time:** July 20, 2025, 6:00 pm – 7:00 pm
+**Agenda:** Project Wrap-Up
+**Summary:** Finalized all components and test cases. Compiled report sections. Assigned documentation and presentation tasks.
+
+| Team Member      | Previous Task                   | Completion State | Next Task                        |
+| ---------------- | ------------------------------- | ---------------- | -------------------------------- |
+| Jeet Patel       | ExportUtil test finalization    | 100%          | Format report and write Appendix |
+| Jay Patel        | Use case test completion        | 95%            | Compile Final Solution section   |
+| Rayansh Chowatia | State transition test execution | 95%            | Prepare visuals and cover page   |
 
 ---
 
