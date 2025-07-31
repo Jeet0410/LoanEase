@@ -1,79 +1,143 @@
-# LoanEase Testing Plan
+# TESTING.md
 
-## Overview
-This document outlines the test plan for the LoanEase CLI-based loan amortization simulator, developed using test-driven development (TDD) and JUnit. The focus is on designing optimal test suites to meet ENSE 375 Software Testing and Validation requirements.
+## 1. Introduction
+This document describes the comprehensive test plan for the LoanEase project, demonstrating fulfillment of all course requirements. We leveraged **JUnit 5** to implement and execute unit, integration, and validation tests covering all specified techniques.
 
-## Test Techniques
+## 2. Course Testing Requirements
+Your professor required that the application be tested using the following techniques:
 
-### Path Testing
-- **Function Tested**: `AmortizationService.generateSchedule`
-- **Paths Covered**: All execution paths (e.g., valid term, invalid term < 0).
-- **Test Cases**: 
-  - Input: Term = 12, Rate = 0.05 → Success path.
-  - Input: Term = -1, Rate = 0.05 → Error path.
-- **Results**: 100% path coverage achieved.
+1. **Function-Level Tests**
+   - **Path Testing**
+   - **Data Flow Testing**n
+2. **Integration Testing**
+   - Test a subset of units together
 
-### Data Flow Testing
-- **Function Tested**: `FormulaEngine.computePMT`
-- **Focus**: Variable definitions and uses (e.g., principal, rate).
-- **Test Cases**: 
-  - Valid data flow: Principal = 10000, Rate = 0.05, Term = 12.
-  - Anomalous flow: Rate undefined → Detected and handled.
-- **Results**: No data flow anomalies.
+3. **Validation Tests**
+   - **Boundary Value Testing**
+   - **Equivalence Class Testing**
+   - **Decision Table Testing**
+   - **State Transition Testing**
+   - **Use Case Testing**
 
-### Integration Testing
-- **Components Tested**: `LoanCLI` with `AmortizationService` and `ExportUtil`.
-- **Test Cases**: 
-  - Input → Schedule generation → Export to CSV.
-- **Results**: 95% pass rate, minor timing issue resolved.
+Each of these is covered in sections 3–9 below.
 
-### Boundary Value Testing
-- **Function Tested**: `LoanInputValidator.validate`
-- **Boundaries**: Principal (0.01, 999999.99), Rate (0, 1).
-- **Test Cases**: 
-  - Principal = 0.00 → Fail.
-  - Principal = 1000000.00 → Fail.
-  - Rate = 1.01 → Fail.
-- **Results**: All boundary cases passed.
+## 3. Function-Level Tests
 
-### Equivalence Class Testing
-- **Function Tested**: `LoanInputValidator.validate`
-- **Equivalence Classes**: 
-  - Valid: Principal (0.01-999999.99), Rate (0-1), Term (1-480).
-  - Invalid: Principal ≤ 0, Rate > 1, Term ≤ 0.
-- **Test Cases**: 
-  - Valid: Principal = 10000, Rate = 0.05, Term = 12.
-  - Invalid: Principal = -1.
-- **Results**: 100% success in valid classes.
+### 3.1 Path Testing
+**Objective:** Cover all code paths in critical functions.
 
-### Decision Tables Testing
-- **Function Tested**: `ExportUtil.exportToCSV` and `exportToPDF`
-- **Conditions**: Format (CSV/PDF), Success/Failure.
-- **Test Cases**: 
-  - CSV Success, PDF Success.
-  - CSV Fail (e.g., permission denied), PDF Success.
-- **Results**: All 4 combinations passed.
+**Target Function:** `FinancialCalculator.computePMT(...)` and error paths in `ExportUtil.exportToCSV(...)`.
 
-### State Transition Testing
-- **Function Tested**: `LoanCLI.runScenario`
-- **States**: Initial Schedule → Updated Schedule.
-- **Test Cases**: 
-  - Add extra payment → Transition success.
-  - Invalid extra payment → Remain in initial state.
-- **Results**: 90% transition coverage.
+| Test Method                                             | Description                                           |
+|---------------------------------------------------------|-------------------------------------------------------|
+| `testComputePMT_StandardLoan()`                         | Normal amortization path (5-year, 5% rate)            |
+| `testComputePMT_ZeroRate()`                             | Zero-interest special branch (`ratePerPeriod == 0`)   |
+| `testComputePMT_WeeklyFrequency()`                      | Invalid frequency → throws `IllegalArgumentException` |
+| `testExportToCSV_EmptySchedule()`                       | Empty schedule → throws `IllegalArgumentException`    |
 
-### Use Case Testing
-- **Use Cases**: 
-  - UC1: User inputs valid loan → Generates schedule.
-  - UC2: User exports schedule → Saves CSV/PDF.
-- **Test Cases**: 
-  - UC1: Input 10000, 0.05, 12 → Schedule displayed.
-  - UC2: Export schedule_1.csv → File created.
-- **Results**: 98% pass rate.
+### 3.2 Data Flow Testing
+**Objective:** Validate internal data transformations (principal → interest → payment portions).
 
-## Execution
-Test cases were executed using `mvn test` in the project directory. Results are logged in `target/surefire-reports`, with coverage tracked via JaCoCo (>80%, targeting >90%). Automated tests run in CI pipeline.
+**Target Function:** Combination of `computePMT`, `interestPortion`, and `principalPortion`.
 
-## Notes
-- All code is well-commented in the GitHub repository.
-- Test data and expected outputs are included in test files (e.g., `LoanEaseCLITest.java`).
+| Test Method                         | Verifies                                                    |
+|-------------------------------------|-------------------------------------------------------------|
+| `testComputePMT_DataFlow()`         | PMT, interest, and principalPortion for $5 000 @ 6% / 6mo.   |
+| `testRoundCurrency()`               | Rounding logic for arbitrary decimal values                |
+
+## 4. Integration Testing
+**Objective:** Test interactions among modules: calculator, service, database, and export utilities.
+
+**Selected Subset:** `AmortizationService`, `DatabaseService`, and `ExportUtil`.
+
+| Test Method                                              | Modules Covered                                         |
+|----------------------------------------------------------|---------------------------------------------------------|
+| `AmortizationServiceTest.testGenerateSchedule_PrincipalFlow()` | `AmortizationService` → `DatabaseService`                |
+| `AmortizationServiceTest.testGenerateSchedule_12Months()`     | Schedule generation logic with saved loan data          |
+| `DatabaseServiceTest.testSaveAndRetrieveLoanAndSchedule()`    | `DatabaseService` persistence and retrieval             |
+| `ExportUtilTest.testIntegrationWithAmortizationService()`     | `AmortizationService` + `ExportUtil` CSV export         |
+
+## 5. Boundary Value Testing
+**Objective:** Verify behavior at input extremes.
+
+| Test Method                                      | Boundary Condition                    |
+|--------------------------------------------------|---------------------------------------|
+| `testComputePMT_NegativePrincipal()`             | Principal < 0 (invalid)               |
+| `testComputePMT_MaxPrincipal()`                  | Principal = $1 000 000                |
+| `LoanInputValidatorTest.testValidate_ZeroTerm()` | Term = 0 (invalid)                    |
+| `testExportToCSV_EmptySchedule()`                | Zero-length schedule (invalid)        |
+
+## 6. Equivalence Class Testing
+**Objective:** Group inputs into valid/invalid classes and test representatives.
+
+| Equivalence Class       | Valid Representative        | Invalid Representative          | Test Method                            |
+|-------------------------|-----------------------------|---------------------------------|----------------------------------------|
+| Principal               | 1 000                       | -1 000                          | `testValidate_ValidInput`, `testValidate_NegativePrincipal` |
+| Annual Rate (%)         | 5%                          | -5%                             | `testValidate_NegativeRate`            |
+| Term (months)           | 12                          | 0                               | `testValidate_ZeroTerm`                |
+| Frequency               | "Monthly"                 | "Weekly"                      | `testValidate_InvalidFrequency`        |
+| Extra Payment           | 100                         | -100                            | `testValidate_NegativeExtraPayment`    |
+
+## 7. Decision Table Testing
+**Objective:** Verify combinations of input conditions using a decision table.
+
+| # | Principal>0 | Rate≥0 | Term>0 | Freq=Monthly | Extra≥0 | Expected Outcome | Test Method                        |
+|---|-------------|--------|--------|--------------|---------|------------------|------------------------------------|
+| 1 | Y           | Y      | Y      | Y            | Y       | Pass             | `testValidate_ValidInput`          |
+| 2 | N           | Y      | Y      | Y            | Y       | Fail             | `testValidate_NegativePrincipal`   |
+| 3 | Y           | N      | Y      | Y            | Y       | Fail             | `testValidate_NegativeRate`        |
+| 4 | Y           | Y      | N      | Y            | Y       | Fail             | `testValidate_ZeroTerm`            |
+| 5 | Y           | Y      | Y      | N            | Y       | Fail             | `testValidate_InvalidFrequency`    |
+| 6 | Y           | Y      | Y      | Y            | N       | Fail             | `testValidate_NegativeExtraPayment`|
+|   | **CSV Variant** |         |        |              |         |                  | `testExportToCSV_DecisionTable`    |
+
+## 8. State Transition Testing
+**Objective:** Confirm CLI state changes (input → schedule display → export prompts).
+
+| Test Method                                 | Scenario                                                                 |
+|---------------------------------------------|--------------------------------------------------------------------------|
+| `LoanEaseCLITest.testStart_StateTransition` | Valid input leads to schedule print, then export prompts in correct order |
+
+## 9. Use Case Testing
+**Objective:** End-to-end scenarios from user perspective.
+
+| Use Case # | Description                                          | Test Method                       |
+|------------|------------------------------------------------------|-----------------------------------|
+| 1          | Display amortization schedule for valid loan input   | `testStart_ValidInput`            |
+| 2          | Export schedule to CSV and PDF                      | `testStart_ExportUseCase`         |
+| 3          | Run “extra payment” scenario                         | `testStart_ScenarioUseCase`       |
+
+## 10. Tools & Coverage
+- **Framework:** JUnit 5, Maven, JDK
+- **Code Coverage:** > 80 % overall (measured via Java Code Runner JUnit Extension Coverage)
+
+### Test Coverage Snapshot
+
+![Test Coverage](/loanease/src/main/resources/Screenshot%202025-07-31%20at%2012.47.18 PM.png)
+
+---
+
+## 11. Execution Instructions
+### Option 1: Use the Testing Sidebar
+
+1. Click the **Testing** icon (🧪) in the sidebar.
+2. You’ll see your test class and test methods listed.
+3. Right Click the **loanease** icon and choose 'Run Test with Coverage'.
+
+### Option 2: Right-Click in Code
+
+1. Inside any test method, right-click and choose:
+   - **Run Test with coverage** or **Debug Test**
+
+### Option 3: Command line  
+1. If you want to use the command line then: 
+    ```bash
+    mvn test
+    ```
+
+   
+VSCode will show test results in the **Test Output Panel**.
+
+
+
+All outputs are automatically compared to expected results; failures will report mismatches.
