@@ -13,9 +13,9 @@ LoanEase is a modular, CLI-based **loan amortization simulator** that empowers u
 - [Rayansh Chowatia](https://github.com/Rayansh-Chowatia)  
 
 ## Documentation & Reports
-- **Project Report:** [REPORT.md](REPORT.md)  
-- **Testing Plan:** [TESTING.md](TESTING.md)  
-- **Design & Requirements:** [Project_File_Template.pdf](./Docs/Project_File_Template.pdf)  
+- **Project Report:** [REPORT.md](/report.md)  
+- **Testing Plan:** [TESTING.md](/testing.md)  
+- **Project Presentation:** [Project Presentation](/Documents/Project-Presentation)  
 
 ## Getting Started
 Clone the repository and navigate into the project directory:
@@ -23,6 +23,8 @@ Clone the repository and navigate into the project directory:
 ```bash
 # Clone the LoanEase repository
 git clone https://github.com/Jeet0410/LoanEase.git
+```
+```bash
 # Change into the cloned directory
 cd LoanEase
 ```

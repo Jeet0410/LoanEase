@@ -113,7 +113,7 @@ Each of these is covered in sections 3–9 below.
 
 ### Test Coverage Snapshot
 
-![Test Coverage](/loanease/src/main/resources/Screenshot%202025-07-31%20at%2012.47.18 PM.png)
+![Test Coverage](/Documents/Screenshot%202025-07-31%20at%2012.47.18 PM.png)
 
 ---
 
