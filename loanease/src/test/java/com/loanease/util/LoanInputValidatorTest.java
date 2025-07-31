@@ -15,26 +15,55 @@ public class LoanInputValidatorTest {
     }
 
     @Test
-    void testValidate_ValidLoan() {
-        Loan loan = new Loan(new BigDecimal("10000"), new BigDecimal("0.05"), 12, "Monthly", BigDecimal.ZERO);
+    void testValidate_ValidInput() {
+        Loan loan = new Loan(new BigDecimal("1000"), new BigDecimal("0.05"), 12, "Monthly", BigDecimal.ZERO);
         assertDoesNotThrow(() -> validator.validate(loan));
     }
 
     @Test
     void testValidate_NegativePrincipal() {
-        Loan loan = new Loan(new BigDecimal("-100"), new BigDecimal("0.05"), 12, "Monthly", BigDecimal.ZERO);
+        Loan loan = new Loan(new BigDecimal("-1000"), new BigDecimal("0.05"), 12, "Monthly", BigDecimal.ZERO);
+        assertThrows(IllegalArgumentException.class, () -> validator.validate(loan));
+    }
+
+    @Test
+    void testValidate_NegativeRate() {
+        Loan loan = new Loan(new BigDecimal("1000"), new BigDecimal("-0.05"), 12, "Monthly", BigDecimal.ZERO);
         assertThrows(IllegalArgumentException.class, () -> validator.validate(loan));
     }
 
     @Test
     void testValidate_ZeroTerm() {
-        Loan loan = new Loan(new BigDecimal("10000"), new BigDecimal("0.05"), 0, "Monthly", BigDecimal.ZERO);
+        Loan loan = new Loan(new BigDecimal("1000"), new BigDecimal("0.05"), 0, "Monthly", BigDecimal.ZERO);
         assertThrows(IllegalArgumentException.class, () -> validator.validate(loan));
     }
 
     @Test
     void testValidate_InvalidFrequency() {
-        Loan loan = new Loan(new BigDecimal("10000"), new BigDecimal("0.05"), 12, "Yearly", BigDecimal.ZERO);
+        Loan loan = new Loan(new BigDecimal("1000"), new BigDecimal("0.05"), 12, "Weekly", BigDecimal.ZERO);
         assertThrows(IllegalArgumentException.class, () -> validator.validate(loan));
+    }
+
+    @Test
+    void testValidate_NegativeExtraPayment() {
+        Loan loan = new Loan(new BigDecimal("1000"), new BigDecimal("0.05"), 12, "Monthly", new BigDecimal("-100"));
+        assertThrows(IllegalArgumentException.class, () -> validator.validate(loan));
+    }
+
+    @Test
+    void testValidate_DecisionTable() {
+        // Valid case
+        Loan validLoan = new Loan(new BigDecimal("1000"), new BigDecimal("0.05"), 12, "Monthly", BigDecimal.ZERO);
+        assertDoesNotThrow(() -> validator.validate(validLoan));
+
+        // Invalid cases
+        Loan negativePrincipal = new Loan(new BigDecimal("-1000"), new BigDecimal("0.05"), 12, "Monthly", BigDecimal.ZERO);
+        assertThrows(IllegalArgumentException.class, () -> validator.validate(negativePrincipal));
+
+        Loan negativeRate = new Loan(new BigDecimal("1000"), new BigDecimal("-0.05"), 12, "Monthly", BigDecimal.ZERO);
+        assertThrows(IllegalArgumentException.class, () -> validator.validate(negativeRate));
+
+        Loan invalidFrequency = new Loan(new BigDecimal("1000"), new BigDecimal("0.05"), 12, "Yearly", BigDecimal.ZERO);
+        assertThrows(IllegalArgumentException.class, () -> validator.validate(invalidFrequency));
     }
 }
