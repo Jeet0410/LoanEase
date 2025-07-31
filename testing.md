@@ -176,7 +176,51 @@ These interactions are covered by:
 
 ---
 
-## 7. Execution Instructions
+## 7. Full Test Listing
+Below is a comprehensive list of all JUnit test methods grouped by test class and file, with one-line descriptions:
+
+- **FinancialCalculatorTest.java**
+  - **testComputePMT_StandardLoan**: Verifies PMT calculation for a typical loan scenario.  
+  - **testComputePMT_ZeroRate**: Ensures zero-interest loans split principal evenly across periods.  
+  - **testComputePMT_WeeklyFrequency**: Confirms unsupported weekly frequency throws IllegalArgumentException.  
+  - **testComputePMT_NegativePrincipal**: Checks that negative principal input triggers IllegalArgumentException.  
+  - **testComputePMT_MaxPrincipal**: Tests PMT result for a very large principal value.  
+  - **testComputePMT_DataFlow**: Validates correct interest and principal breakdown for each payment.  
+  - **testRoundCurrency**: Ensures monetary values are rounded to two decimal places (HALF_UP).  
+
+- **AmortizationServiceTest.java**
+  - **testGenerateSchedule_PrincipalFlow**: Checks total principal paid equals original loan amount.  
+  - **testGenerateSchedule_12Months**: Verifies schedule length, first payment amounts, and final balance for a 12-month term.  
+
+- **DatabaseServiceTest.java**
+  - **testSaveAndRetrieveLoanAndSchedule**: Validates saving and retrieving loan details and payment schedule from the database.  
+
+- **LoanEaseCLITest.java**
+  - **testStart_ValidInput**: Confirms correct display of amortization table for valid CLI input.  
+  - **testStart_InvalidInput**: Checks CLI error handling and message for invalid input data.  
+  - **testStart_ExportUseCase**: Ensures CSV and PDF export flow is correctly triggered and reported.  
+  - **testStart_ScenarioUseCase**: Tests CLI handling of extra-payment scenarios and displays scenario schedule.  
+  - **testStart_StateTransition**: Verifies CLI state transitions (input → schedule → export prompts) occur in the expected order.  
+
+- **ExportUtilTest.java**
+  - **testExportToCSV_Success**: Asserts successful CSV file creation with correct headers and totals row.  
+  - **testExportToCSV_EmptySchedule**: Checks exception thrown when attempting to export an empty schedule.  
+  - **testExportToPDF_Success**: Validates PDF file creation and ensures its size is greater than zero.  
+  - **testExportToPDF_NullLoan**: Ensures IllegalArgumentException is thrown when loan object is null for PDF export.  
+  - **testExportToCSV_DecisionTable**: Tests CSV export across valid, empty, and invalid path scenarios per decision table.  
+  - **testIntegrationWithAmortizationService**: Confirms end-to-end CSV export integration with AmortizationService.  
+
+- **LoanInputValidatorTest.java**
+  - **testValidate_ValidInput**: Ensures no exception for fully valid loan parameter combinations.  
+  - **testValidate_NegativePrincipal**: Checks exception for principal less than or equal to zero.  
+  - **testValidate_NegativeRate**: Checks exception for negative interest rate input.  
+  - **testValidate_ZeroTerm**: Checks exception thrown for zero term length.  
+  - **testValidate_InvalidFrequency**: Checks exception for unsupported payment frequency values.  
+  - **testValidate_NegativeExtraPayment**: Checks exception for negative extra payment input.  
+  - **testValidate_DecisionTable**: Runs multiple input combinations per decision table and verifies expected outcomes.
+
+
+## 8. Execution Instructions
 ### Option 1: Use the Testing Sidebar
 
 1. Click the **Testing** icon (🧪) in the sidebar.

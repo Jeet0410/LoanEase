@@ -7,6 +7,10 @@
 ## Project Overview
 LoanEase is a modular, CLI-based **loan amortization simulator** that empowers users to explore repayment schedules, what-if scenarios (extra payments, rate shocks), and export results in CSV/PDF formats. Built with a test-driven development approach, LoanEase emphasizes accuracy, reliability, and maintainability.
 
+## ENSE 375: Software Testing and Validation
+- **Project:** Testing Group Project
+- **Professor:** [Dr. Yogesh Sharma](https://www.uregina.ca/engineering/directory/yogesh-sharma.html)
+
 ## Contributors
 - [Jeet Patel](https://github.com/Jeet0410) 
 - [Jay Patel](https://github.com/JAY0103) 
@@ -15,7 +19,8 @@ LoanEase is a modular, CLI-based **loan amortization simulator** that empowers u
 ## Documentation & Reports
 - **Project Report:** [REPORT.md](/report.md)  
 - **Testing Plan:** [TESTING.md](/testing.md)  
-- **Project Presentation:** [Project Presentation](/Documents/Project-Presentation)  
+- **Project Presentation:** [Project Presentation](/Documents/LoanEase_Presentation.pdf)  
+- **Presentation Video:** [Presentation Video](/Documents/LoanEase_presentation_video.mp4)
 
 ## Getting Started
 Clone the repository and navigate into the project directory:
