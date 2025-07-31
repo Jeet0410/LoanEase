@@ -24,7 +24,6 @@
 5. [Project Management](#project-management)  
 6. [Conclusion and Future Work](#conclusion-and-future-work)  
 7. [References](#references)  
-8. [Appendix](#appendix)
 
 ## Introduction
 LoanEase is a user-friendly **loan amortization simulator** designed to demystify the true cost of borrowing. It lets users input loan parameters, explore *what‑if* scenarios (such as extra payments or rate shocks), and instantly view detailed repayment schedules and visualisations.
@@ -272,33 +271,45 @@ Results were logged in `target/surefire-reports`, showing >80% coverage (target 
 
 ---
 
-<!--## Objectives
-List the goals and objectives of the project.
+## 5. Project Management
+We planned and tracked project tasks, their predecessors, durations, slack times, and identified the critical path.
 
-## System Design
-### Architecture
-Explain the overall architecture of the system.
+![Gantt_Chart](<Documents/LoanEase Project Gantt Chart.png>)
 
-### Components
-Detail the individual components and their roles.
+| Task ID | Task                         | Duration (weeks) | Predecessor(s)   | Slack (days) | Critical? |
+|---------|------------------------------|------------------|------------------|--------------|-----------|
+| T1      | Problem Definition           | 1                | —                | 0            | Yes       |
+| T2      | Design 1                     | 2                | T1               | 0            | Yes       |
+| T3      | Design 2                     | 2                | T1               | 0            | Yes       |
+| T4      | Design Selection             | 1                | T2, T3           | 0            | Yes       |
+| T5      | CLI Implementation           | 3                | T4               | 0            | Yes       |
+| T6      | Testing Suite Development    | 3                | T4               | 0            | Yes       |
+| T7      | Documentation                | 9                | T1               | 7            | No        |
+| T8      | Presentation Preparation     | 1                | T7               | 0            | Yes       |
 
-## Implementation
-Describe the implementation details, including technologies and tools used.
+**Critical Path:** T1 → T2 & T3 → T4 → T5 / T6 → T8 (all slack = 0)  
+**Note:** Documentation (T7) spanned the entire project and has 7 days of slack.
 
-## Testing
-Outline the testing strategies and results.
 
-## Results and Analysis
-Present the outcomes and analyze the results.
 
-## Challenges Faced
-Discuss the challenges encountered during the project.
+## 6. Conclusion and Future Work
+**Summary of Achievements:**  
+- Implemented all functional requirements: parameter loading, schedule generation, scenario running, CSV/PDF export, and input validation.  
+- Satisfied design objectives: accuracy (±0.01 CAD), reliability, extensibility, usability, and maintainability.  
+- Met all constraints (C1–C5) with open‑source libraries, correct rounding, <1 s performance, no PII, and JDK 17+ compatibility.  
+- Executed comprehensive test suite covering path, data flow, integration, boundary value, equivalence class, decision table, state transition, and use case testing, achieving >80 % coverage.
 
-## Future Enhancements
-Suggest potential improvements or extensions.
+**Future Recommendations:**  
+- **GUI/Web Front‑End:** Add interactive visualizations (charts, graphs) for enhanced user experience.  
+- **Localization/Internationalization:** Support multiple currencies and languages.  
+- **Scalability:** Migrate persistence from SQLite to a scalable database for larger workloads.  
+- **CI/CD Integration:** Automate builds, tests, coverage, and linting in a continuous integration pipeline.  
+- **Multiple Payment Frequencies:** Extend beyond monthly to support biweekly, weekly, and quarterly repayment options—allowing users to model more flexible amortization schedules (e.g. “every 2 weeks,” “every 3 months”).
+- **Modular Plugins:** Design plugin interfaces for additional financial products (e.g., mortgages, investments).
 
-## Conclusion
-Summarize the project and its impact.
+## 7. References
+[1] University of Regina, “Project File Template for ENSE 375,” UR Courses.  
+[2] Canada Revenue Agency, “Rounding Rules for APR Calculations,” 2024.  
+[3] Apache Commons Math, “User Guide,” Available: https://commons.apache.org/proper/commons-math/userguide.  
+[4] iText Software, “iText 7 Documentation,” Available: https://itextpdf.com.
 
-## References
-List all references and resources used.-->
