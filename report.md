@@ -175,9 +175,9 @@ Results were logged in `target/surefire-reports`, showing >80% coverage (target 
 
 #### Meeting 2
  
-**Time:** May 17, 2025, 5:00 pm – 6:00 pm
-**Agenda:** Design Discussion
-**Summary:** Shared and discussed individual design ideas. Compared web, mobile, and CLI approaches. Outlined initial solution options and testing techniques.
+- **Time:** May 17, 2025, 5:00 pm – 6:00 pm
+- **Agenda:** Design Discussion
+- **Summary:** Shared and discussed individual design ideas. Compared web, mobile, and CLI approaches. Outlined initial solution options and testing techniques.
 
 | Team Member      | Previous Task       | Completion State | Next Task                        |
 | ---------------- | ------------------- | ---------------- | -------------------------------- |
@@ -189,9 +189,9 @@ Results were logged in `target/surefire-reports`, showing >80% coverage (target 
 
 #### Meeting 3
 
-**Time:** May 24, 2025, 6:00 pm – 7:00 pm
-**Agenda:** Solution Planning
-**Summary:** Team finalized the two main solution prototypes (Web and Mobile). Created rough outlines and started dividing implementation tasks.
+- **Time:** May 24, 2025, 6:00 pm – 7:00 pm
+- **Agenda:** Solution Planning
+- **Summary:** Team finalized the two main solution prototypes (Web and Mobile). Created rough outlines and started dividing implementation tasks.
 
 | Team Member      | Previous Task        | Completion State | Next Task                            |
 | ---------------- | -------------------- | ---------------- | ------------------------------------ |
@@ -203,9 +203,9 @@ Results were logged in `target/surefire-reports`, showing >80% coverage (target 
 
 #### Meeting 4
 
-**Time:** June 1, 2025, 5:30 pm – 6:30 pm
-**Agenda:** Prototype Feedback
-**Summary:** Shared progress on both prototypes. Identified key testing limitations and gaps in both web and mobile solutions.
+- **Time:** June 1, 2025, 5:30 pm – 6:30 pm
+- **Agenda:** Prototype Feedback
+- **Summary:** Shared progress on both prototypes. Identified key testing limitations and gaps in both web and mobile solutions.
 
 | Team Member      | Previous Task                  | Completion State | Next Task                       |
 | ---------------- | ------------------------------ | ---------------- | ------------------------------- |
@@ -217,9 +217,9 @@ Results were logged in `target/surefire-reports`, showing >80% coverage (target 
 
 #### Meeting 5
 
-**Time:** June 10, 2025, 5:00 pm – 6:00 pm
-**Agenda:** Testing Techniques Review
-**Summary:** Reviewed all required software testing techniques. Compared how well each prototype supports testing. Noted that CLI option had best testability.
+- **Time:** June 10, 2025, 5:00 pm – 6:00 pm
+- **Agenda:** Testing Techniques Review
+- **Summary:** Reviewed all required software testing techniques. Compared how well each prototype supports testing. Noted that CLI option had best testability.
 
 | Team Member      | Previous Task               | Completion State | Next Task                            |
 | ---------------- | --------------------------- | ---------------- | ------------------------------------ |
@@ -231,9 +231,9 @@ Results were logged in `target/surefire-reports`, showing >80% coverage (target 
 
 #### Meeting 6
 
-**Time:** June 18, 2025, 4:00 pm – 5:00 pm
-**Agenda:** Final Solution Selection
-**Summary:** Based on testability and maintainability, selected CLI-based solution as final. Discussed next tasks: modular design, full integration, and export feature.
+- **Time:** June 18, 2025, 4:00 pm – 5:00 pm
+- **Agenda:** Final Solution Selection
+- **Summary:** Based on testability and maintainability, selected CLI-based solution as final. Discussed next tasks: modular design, full integration, and export feature.
 
 | Team Member      | Previous Task         | Completion State | Next Task                     |
 | ---------------- | --------------------- | ---------------- | ----------------------------- |
@@ -245,9 +245,9 @@ Results were logged in `target/surefire-reports`, showing >80% coverage (target 
 
 #### Meeting 7
 
-**Time:** July 5, 2025, 5:30 pm – 6:30 pm
-**Agenda:** Testing and Validation
-**Summary:** Reviewed JUnit test coverage (path, BVA, ECT, decision tables). Confirmed results using Maven and JaCoCo. Identified areas needing more coverage.
+- **Time:** July 5, 2025, 5:30 pm – 6:30 pm
+- **Agenda:** Testing and Validation
+- **Summary:** Reviewed JUnit test coverage (path, BVA, ECT, decision tables). Confirmed results using Maven and JaCoCo. Identified areas needing more coverage.
 
 | Team Member      | Previous Task               | Completion State | Next Task                           |
 | ---------------- | --------------------------- | ---------------- | ----------------------------------- |
@@ -259,9 +259,9 @@ Results were logged in `target/surefire-reports`, showing >80% coverage (target 
 
 #### Meeting 8
 
-**Time:** July 20, 2025, 6:00 pm – 7:00 pm
-**Agenda:** Project Wrap-Up
-**Summary:** Finalized all components and test cases. Compiled report sections. Assigned documentation and presentation tasks.
+- **Time:** July 20, 2025, 6:00 pm – 7:00 pm
+- **Agenda:** Project Wrap-Up
+- **Summary:** Finalized all components and test cases. Compiled report sections. Assigned documentation and presentation tasks.
 
 | Team Member      | Previous Task                   | Completion State | Next Task                        |
 | ---------------- | ------------------------------- | ---------------- | -------------------------------- |
