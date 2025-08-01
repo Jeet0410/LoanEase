@@ -4,7 +4,7 @@
 This document presents the comprehensive test plan for **LoanEase**, demonstrating fulfillment of all ENSE 375 testing requirements. We apply both structure-based (path, data flow) and specification-based (boundary, equivalence class, decision table, state transition, use case) techniques, alongside integration tests.
 
 ## 2. Test Requirements
-Per course syllabus, the application must be tested as follows:
+Per project requirements, the application must be tested as follows:
 
 - **Function-Level (Structure-Based):** Path Testing, Data Flow Testing
 - **Integration Testing:** Interactions among a subset of modules
@@ -176,7 +176,7 @@ These interactions are covered by:
 
 ---
 
-## 7. Full Test Listing
+## 7. Full Test Listing (28 Test Cases)
 Below is a comprehensive list of all JUnit test methods grouped by test class and file, with one-line descriptions:
 
 - **FinancialCalculatorTest.java**

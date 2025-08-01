@@ -20,7 +20,7 @@ LoanEase is a modular, CLI-based **loan amortization simulator** that empowers u
 - **Project Report:** [REPORT.md](/report.md)  
 - **Testing Plan:** [TESTING.md](/testing.md)  
 - **Project Presentation:** [Project Presentation](/Documents/LoanEase_Presentation.pdf)  
-- **Presentation Video:** [Presentation Video](/Documents/LoanEase_presentation_video.mp4)
+- **Presentation Video:** [Presentation Video](https://youtu.be/FwdxKUQ_BRY)
 
 ## Getting Started
 Clone the repository and navigate into the project directory:
